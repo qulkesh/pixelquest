@@ -26,8 +26,12 @@ export default function CharacterCreate() {
 
   if (!user) return <Navigate to="/login" replace />;
 
-  function cycle(field: keyof Appearance) {
-    setLook(prev => ({ ...prev, [field]: (((prev[field] - 1 + 1) % 4) + 1) as 1|2|3|4 }));
+  function cycle(field: keyof Appearance, max = 8) {
+    setLook(prev => {
+      const cur = (prev[field] as number) ?? 1;
+      const next = (cur % max) + 1;
+      return { ...prev, [field]: next };
+    });
   }
 
   return (
