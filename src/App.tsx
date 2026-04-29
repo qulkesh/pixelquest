@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { useAuthStore } from './store/useAuthStore';
 import { useGameStore } from './store/useGameStore';
+import { pullProfile } from './lib/profileSync';
 import Login from './pages/Login';
 import CharacterCreate from './pages/CharacterCreate';
 import Dashboard from './pages/Dashboard';
@@ -26,6 +27,13 @@ function Protected({ children }: { children: JSX.Element }) {
   useEffect(() => {
     if (user && (!profile || profile.id !== user.id)) bootstrap(user.id, user.email);
   }, [user?.id]);
+
+  // После того как локальный профиль готов — затягиваем актуальные значения из Supabase.
+  useEffect(() => {
+    if (user && profile && profile.id === user.id) {
+      void pullProfile(user.id);
+    }
+  }, [user?.id, profile?.id]);
 
   if (!ready) return null;
   if (!user) return <Navigate to="/login" replace />;
