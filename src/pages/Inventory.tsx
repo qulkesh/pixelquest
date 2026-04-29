@@ -52,7 +52,7 @@ export default function Inventory() {
                       <div className="mt-2 flex gap-2 flex-wrap">
                         {it.slot === 'potion' && <PixelButton variant="good" onClick={() => usePotion(r.id)}>{t('inventory.use')}</PixelButton>}
                         {it.slot === 'chest' && <PixelButton variant="gold" onClick={() => openChest(r.id)}>{t('inventory.use')}</PixelButton>}
-                        {['weapon','armor','helmet','boots','amulet','book','gadget','tool'].includes(it.slot) && (
+                        {['weapon','armor','helmet','boots','amulet','book','gadget','tool','background','cosmetic'].includes(it.slot) && (
                           r.equipped
                             ? <PixelButton onClick={() => unequip(r.id)}>{t('inventory.unequip')}</PixelButton>
                             : <PixelButton variant="primary" onClick={() => equip(r.id)}>{t('inventory.equip')}</PixelButton>

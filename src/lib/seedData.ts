@@ -16,13 +16,15 @@ export const seedCategories: Category[] = [
 
 export function makeSystemHabits(userId: string): Habit[] {
   const mk = (
-    title: string, cat: string, diff: 'easy' | 'normal' | 'hard',
-    freq: 'daily' | 'weekdays' | 'weekends' | '3xweek' | 'weekly',
-    desc?: string
+    keyId: string,
+    title_ru: string, title_en: string,
+    cat: string, diff: 'easy' | 'normal' | 'hard',
+    freq: 'daily' | 'weekdays' | 'weekends' | '3xweek' | 'weekly'
   ): Habit => ({
-    id: `sys-${title.replace(/\s+/g,'-').toLowerCase()}`,
+    id: `sys-${keyId}`,
     user_id: userId,
-    title, description: desc,
+    title: title_ru,
+    title_ru, title_en,
     category_id: cat,
     difficulty: diff,
     frequency: freq,
@@ -32,18 +34,18 @@ export function makeSystemHabits(userId: string): Habit[] {
   });
 
   return [
-    mk('Выпить 2 литра воды',          'cat-health',     'easy',   'daily'),
-    mk('Сделать зарядку',              'cat-sport',      'easy',   'daily'),
-    mk('Тренировка 45 мин',            'cat-sport',      'hard',   '3xweek'),
-    mk('Прочитать 20 страниц',         'cat-reading',    'normal', 'daily'),
-    mk('Изучать язык 15 мин',          'cat-languages',  'easy',   'daily'),
-    mk('Глубокая работа 90 мин',       'cat-work',       'hard',   'weekdays'),
-    mk('Лечь спать до 23:30',          'cat-sleep',      'normal', 'daily'),
-    mk('Записать 3 расхода',           'cat-finance',    'easy',   'daily'),
-    mk('5 минут медитации',            'cat-discipline', 'easy',   'daily'),
-    mk('Творчество 30 мин',            'cat-creative',   'normal', '3xweek'),
-    mk('Прогулка 30 мин',              'cat-health',     'easy',   'daily'),
-    mk('План на завтра',               'cat-discipline', 'easy',   'daily')
+    mk('water-2l',     'Выпить 2 литра воды',     'Drink 2L of water',   'cat-health',     'easy',   'daily'),
+    mk('morning-ex',   'Сделать зарядку',         'Morning exercise',    'cat-sport',      'easy',   'daily'),
+    mk('workout-45',   'Тренировка 45 мин',       'Workout 45 min',      'cat-sport',      'hard',   '3xweek'),
+    mk('read-20',      'Прочитать 20 страниц',    'Read 20 pages',       'cat-reading',    'normal', 'daily'),
+    mk('lang-15',      'Изучать язык 15 мин',     'Study a language 15 min','cat-languages','easy',  'daily'),
+    mk('deep-work-90', 'Глубокая работа 90 мин',  'Deep work 90 min',    'cat-work',       'hard',   'weekdays'),
+    mk('sleep-2330',   'Лечь спать до 23:30',     'Sleep before 23:30',  'cat-sleep',      'normal', 'daily'),
+    mk('expenses-3',   'Записать 3 расхода',      'Log 3 expenses',      'cat-finance',    'easy',   'daily'),
+    mk('meditate-5',   '5 минут медитации',       '5 min meditation',    'cat-discipline', 'easy',   'daily'),
+    mk('creative-30',  'Творчество 30 мин',       'Creative work 30 min','cat-creative',   'normal', '3xweek'),
+    mk('walk-30',      'Прогулка 30 мин',         'Walk 30 min',         'cat-health',     'easy',   'daily'),
+    mk('plan-tomorrow','План на завтра',          'Plan tomorrow',       'cat-discipline', 'easy',   'daily')
   ];
 }
 

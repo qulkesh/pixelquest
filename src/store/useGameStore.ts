@@ -108,8 +108,16 @@ function startWeekBoss(): BossProgress {
     boss_key: 'chaos_of_laziness',
     hp_max: 100, hp_left: 100,
     requirements: { habits: 14, tasks: 7 },
+    progress: { habits_done: 0, tasks_done: 0 },
     status: 'active'
   };
+}
+
+// Универсальная "ленивая" миграция босса для старых сохранений (без поля progress).
+function ensureBoss(b: BossProgress | null): BossProgress {
+  if (!b) return startWeekBoss();
+  if (!b.progress) return { ...b, progress: { habits_done: 0, tasks_done: 0 } };
+  return b;
 }
 
 // -----------------------------------------------
@@ -208,12 +216,24 @@ export const useGameStore = create<GameState>()(
         pushToast(`+${xp} XP`, 'info');
         if (gold) pushToast(`+${gold} G`, 'gold');
 
-        // damage to boss
-        if (boss && boss.status === 'active') {
+        // boss tracking: и урон, и счётчик привычек
+        const bb = ensureBoss(boss);
+        if (bb.status === 'active') {
           const dmg = 2 + Math.floor(Math.random() * 4);
-          const hp_left = Math.max(0, boss.hp_left - dmg);
-          set({ boss: { ...boss, hp_left, status: hp_left === 0 ? 'won' : boss.status } });
-          if (hp_left === 0) onBossDefeated();
+          const hp_left = Math.max(0, bb.hp_left - dmg);
+          const habits_done = bb.progress.habits_done + 1;
+          const tasks_done = bb.progress.tasks_done;
+          const reqMet = habits_done >= bb.requirements.habits && tasks_done >= bb.requirements.tasks;
+          const won = hp_left === 0 || reqMet;
+          set({
+            boss: {
+              ...bb,
+              hp_left: won ? 0 : hp_left,
+              progress: { habits_done, tasks_done },
+              status: won ? 'won' : bb.status
+            }
+          });
+          if (won) onBossDefeated();
         }
 
         // quest progress
@@ -297,13 +317,24 @@ export const useGameStore = create<GameState>()(
         pushToast(`+${xp} XP`, 'info');
         if (gold) pushToast(`+${gold} G`, 'gold');
 
-        // boss damage
-        const boss = get().boss;
-        if (boss && boss.status === 'active') {
+        // boss damage + счётчик задач
+        const bb = ensureBoss(get().boss);
+        if (bb.status === 'active') {
           const dmg = 4 + Math.floor(Math.random() * 4);
-          const hp_left = Math.max(0, boss.hp_left - dmg);
-          set({ boss: { ...boss, hp_left, status: hp_left === 0 ? 'won' : boss.status } });
-          if (hp_left === 0) onBossDefeated();
+          const hp_left = Math.max(0, bb.hp_left - dmg);
+          const tasks_done = bb.progress.tasks_done + 1;
+          const habits_done = bb.progress.habits_done;
+          const reqMet = habits_done >= bb.requirements.habits && tasks_done >= bb.requirements.tasks;
+          const won = hp_left === 0 || reqMet;
+          set({
+            boss: {
+              ...bb,
+              hp_left: won ? 0 : hp_left,
+              progress: { habits_done, tasks_done },
+              status: won ? 'won' : bb.status
+            }
+          });
+          if (won) onBossDefeated();
         }
         progressQuests('tasks_done', 1);
         if (!isResting(get().profile)) tryDrop(eff);

@@ -56,9 +56,16 @@ export default function Dashboard() {
       <PixelCard title={t('dashboard.welcome', { name: profile.nickname })} accent="cyan" className="md:col-span-1">
         <div className="flex flex-col items-center text-center gap-3">
           <div className={resting ? 'opacity-70' : ''}>
-            <Avatar gender={profile.gender} appearance={profile.appearance}
-              hpRatio={profile.hp / profile.hp_max} resting={resting} size={140}
-              equipped={equippedMap} />
+            <div className="md:hidden">
+              <Avatar gender={profile.gender} appearance={profile.appearance}
+                hpRatio={profile.hp / profile.hp_max} resting={resting} size={110}
+                equipped={equippedMap} />
+            </div>
+            <div className="hidden md:block">
+              <Avatar gender={profile.gender} appearance={profile.appearance}
+                hpRatio={profile.hp / profile.hp_max} resting={resting} size={140}
+                equipped={equippedMap} />
+            </div>
           </div>
           {resting && <div className="text-bad font-pixel text-[10px]">{t('dashboard.resting', { min: minutes })}</div>}
           <div className="w-full">
@@ -98,7 +105,9 @@ export default function Dashboard() {
                 <div className="flex items-center gap-3 min-w-0">
                   <span className="font-pixel text-sm" style={{ color: cat?.color }}>{cat?.icon ?? '?'}</span>
                   <div className="min-w-0">
-                    <div className="font-pixel text-sm truncate">{h.title}</div>
+                    <div className="font-pixel text-sm truncate">
+                      {lang === 'en' && h.title_en ? h.title_en : (lang === 'ru' && h.title_ru ? h.title_ru : h.title)}
+                    </div>
                     <div className="text-muted text-sm">
                       {t('habits.rewardSet', { xp: h.xp_reward, gold: h.gold_reward })} · {t('frequency.' + h.frequency)} · {t('difficulty.' + h.difficulty)}
                     </div>

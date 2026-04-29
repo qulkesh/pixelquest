@@ -53,6 +53,9 @@ export interface Habit {
   id: string;
   user_id: string;
   title: string;
+  // локализованные названия для системных привычек (опц., у пользовательских отсутствуют)
+  title_ru?: string;
+  title_en?: string;
   description?: string;
   category_id?: string | null;
   difficulty: Difficulty;
@@ -159,5 +162,6 @@ export interface BossProgress {
   hp_max: number;
   hp_left: number;
   requirements: { habits: number; tasks: number };
+  progress: { habits_done: number; tasks_done: number };
   status: 'active' | 'won' | 'lost';
 }

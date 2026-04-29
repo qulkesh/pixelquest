@@ -16,7 +16,7 @@ const items: { to: string; key: string; icon: string }[] = [
 export default function Sidebar() {
   const t = useT();
   return (
-    <nav className="pixel-frame p-2 flex md:flex-col flex-row gap-1 sticky top-2 z-10">
+    <nav className="pixel-frame p-2 flex md:flex-col flex-row gap-1 sticky top-2 z-10 overflow-x-auto md:overflow-visible">
       {items.map(it => (
         <NavLink
           key={it.to}

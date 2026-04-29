@@ -61,7 +61,7 @@ export default function CharacterCreate() {
             <div>
               <div className="stat-label mb-2">{t('character.chooseGender')}</div>
               <div className="flex gap-2">
-                {(['male','female','other'] as Gender[]).map(g => (
+                {(['male','female'] as Gender[]).map(g => (
                   <PixelButton key={g} variant={gender === g ? 'primary' : 'default'} onClick={() => setGender(g)}>
                     {t(`character.${g}`)}
                   </PixelButton>

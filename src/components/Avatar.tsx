@@ -39,6 +39,7 @@ export default function Avatar({ gender, appearance, hpRatio, resting, size = 16
 
   const damaged = hpRatio < 0.5;
   const dead = hpRatio <= 0 || resting;
+  const female = gender === 'female';
 
   const armorPal = equipped.armor ? paletteForRarity(equipped.armor.rarity) : null;
   const helmetPal = equipped.helmet ? paletteForRarity(equipped.helmet.rarity) : null;
@@ -95,9 +96,22 @@ export default function Avatar({ gender, appearance, hpRatio, resting, size = 16
       {/* nose hint */}
       {P(19, 17, skinD, 2, 1, 'nose')}
 
-      {/* mouth */}
-      {P(17, 19, damaged ? '#c12648' : '#9c5040', 6, 1, 'mouth')}
+      {/* mouth — у девушки розовая помада */}
+      {P(17, 19, damaged ? '#c12648' : (female ? '#ff5c8a' : '#9c5040'), 6, 1, 'mouth')}
       {!damaged && P(18, 19, '#ffffff66', 4, 1, 'mouth-hl')}
+
+      {/* female extras: ресницы и румянец */}
+      {female && !dead && (
+        <>
+          {P(14, 13, '#0b0d1a', 1, 1, 'lash-l-1')}
+          {P(19, 13, '#0b0d1a', 1, 1, 'lash-l-2')}
+          {P(20, 13, '#0b0d1a', 1, 1, 'lash-r-1')}
+          {P(25, 13, '#0b0d1a', 1, 1, 'lash-r-2')}
+          {/* blush */}
+          <rect x="14" y="17" width="2" height="1" fill="#ff8aa8" opacity="0.7" />
+          <rect x="24" y="17" width="2" height="1" fill="#ff8aa8" opacity="0.7" />
+        </>
+      )}
 
       {/* damage bruise */}
       {damaged && P(15, 11, '#7a4dff', 3, 1, 'bruise')}
@@ -105,6 +119,18 @@ export default function Avatar({ gender, appearance, hpRatio, resting, size = 16
       {/* ============ HAIR (depends on style) ============ */}
       {/* base hair shadow row */}
       {hairStyle !== 'mohawk' && P(13, 6, hairD, 14, 1, 'hair-shade')}
+
+      {/* female: длинные волосы по бокам у любых стилей кроме mohawk/bowl */}
+      {female && hairStyle !== 'mohawk' && hairStyle !== 'bowl' && (
+        <g key="female-hair">
+          {P(12, 9, hairL, 1, 16, 'long-l')}
+          {P(27, 9, hairL, 1, 16, 'long-r')}
+          {P(11, 11, hairL, 1, 12, 'long-l-2')}
+          {P(28, 11, hairL, 1, 12, 'long-r-2')}
+          {P(12, 24, hairD, 1, 1, 'long-l-tip')}
+          {P(27, 24, hairD, 1, 1, 'long-r-tip')}
+        </g>
+      )}
 
       {hairStyle === 'short' && (
         <>
@@ -171,6 +197,17 @@ export default function Avatar({ gender, appearance, hpRatio, resting, size = 16
           <g key="torso">
             {P(13, 25, main, 14, 14, 'torso')}
             {P(24, 25, shadow, 3, 14, 'torso-r-shade')}
+            {/* female: узкая талия — закрашиваем края фоном (видим контур) */}
+            {female && (
+              <g key="waist">
+                <rect x="13" y="32" width="1" height="3" fill="rgba(0,0,0,0)" />
+                <rect x="26" y="32" width="1" height="3" fill="rgba(0,0,0,0)" />
+                {P(13, 33, '#0b0d1a', 1, 2, 'waist-l-cut')}
+                {P(26, 33, '#0b0d1a', 1, 2, 'waist-r-cut')}
+                {P(14, 33, shadow, 1, 2, 'waist-l-edge')}
+                {P(25, 33, shadow, 1, 2, 'waist-r-edge')}
+              </g>
+            )}
             {/* shoulders */}
             {P(11, 25, main, 2, 5, 'shoulder-l')}
             {P(27, 25, main, 2, 5, 'shoulder-r')}

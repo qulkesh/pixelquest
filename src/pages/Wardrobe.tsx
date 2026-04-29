@@ -63,7 +63,7 @@ export default function Wardrobe() {
               placeholder={t('character.enterName')}
             />
             <div className="flex gap-2">
-              {(['male','female','other'] as Gender[]).map(g => (
+              {(['male','female'] as Gender[]).map(g => (
                 <PixelButton key={g} variant={gender === g ? 'primary' : 'default'} onClick={() => setGender(g)}>
                   {t(`character.${g}`)}
                 </PixelButton>
