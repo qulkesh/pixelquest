@@ -3,10 +3,13 @@ import PixelCard from '../components/ui/PixelCard';
 import PixelButton from '../components/ui/PixelButton';
 import ProgressBar from '../components/ui/ProgressBar';
 import Avatar from '../components/Avatar';
+import StatsPanel from '../components/StatsPanel';
 import { useGameStore } from '../store/useGameStore';
 import { useT } from '../hooks/useT';
 import { useUiStore } from '../store/useUiStore';
 import { restMinutesLeft, isResting, xpForLevel } from '../lib/gameLogic';
+import { findItemById } from '../lib/seedData';
+import type { Item } from '../types/game';
 
 export default function Dashboard() {
   const t = useT();
@@ -22,11 +25,23 @@ export default function Dashboard() {
   const skipDaily = useGameStore(s => s.skipDaily);
   const failDaily = useGameStore(s => s.failDaily);
 
+  const inventory = useGameStore(s => s.inventory);
+
   if (!profile || !dailyPick) return null;
 
   const resting = isResting(profile);
   const minutes = resting ? restMinutesLeft(profile) : 0;
   const skipsLeft = Math.max(0, 1 - profile.skips_used_today);
+
+  // собрать экипировку для отрисовки на персонаже
+  const equippedMap: Partial<Record<'weapon'|'armor'|'helmet'|'boots'|'amulet', Item>> = {};
+  for (const row of inventory) {
+    if (!row.equipped) continue;
+    const it = findItemById(row.item_id); if (!it) continue;
+    if (['weapon','armor','helmet','boots','amulet'].includes(it.slot)) {
+      (equippedMap as any)[it.slot] = it;
+    }
+  }
 
   const todays = dailyPick.habit_ids
     .map(id => habits.find(h => h.id === id))
@@ -42,7 +57,8 @@ export default function Dashboard() {
         <div className="flex flex-col items-center text-center gap-3">
           <div className={resting ? 'opacity-70' : ''}>
             <Avatar gender={profile.gender} appearance={profile.appearance}
-              hpRatio={profile.hp / profile.hp_max} resting={resting} size={140} />
+              hpRatio={profile.hp / profile.hp_max} resting={resting} size={140}
+              equipped={equippedMap} />
           </div>
           {resting && <div className="text-bad font-pixel text-[10px]">{t('dashboard.resting', { min: minutes })}</div>}
           <div className="w-full">
@@ -56,6 +72,10 @@ export default function Dashboard() {
             <Mini label={t('stats.gold')} value={profile.gold} tone="text-gold" />
             <Mini label={t('stats.energy')} value={profile.energy} tone="text-good" />
             <Mini label={t('stats.focus')} value={profile.focus} tone="text-cyan" />
+          </div>
+          <div className="w-full mt-2 pt-3 border-t-2 border-frame">
+            <div className="stat-label mb-2">{lang === 'en' ? 'STATS' : 'ХАРАКТЕРИСТИКИ'}</div>
+            <StatsPanel lang={lang} />
           </div>
         </div>
       </PixelCard>

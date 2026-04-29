@@ -21,7 +21,16 @@ export const en: Dictionary = {
     dashboard: 'Home', habits: 'Habits', todos: 'Tasks',
     quests: 'Quests', achievements: 'Achievements',
     inventory: 'Inventory', shop: 'Shop', boss: 'Weekly boss',
+    wardrobe: 'Wardrobe',
     settings: 'Settings'
+  },
+  wardrobe: {
+    title: 'Wardrobe',
+    skin: 'Skin',
+    hairStyle: 'Hair style',
+    hairColor: 'Hair color',
+    eyes: 'Eyes',
+    outfit: 'Outfit color'
   },
   stats: {
     level: 'LEVEL', xp: 'XP', hp: 'HP',

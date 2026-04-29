@@ -66,6 +66,9 @@ interface GameState {
   // ---- quests ----
   claimQuest: (id: string) => void;
 
+  // ---- achievements ----
+  unlockAchievement: (key: string) => void;
+
   // ---- helpers (selectors) ----
   effects: () => ItemEffects;
 }
@@ -413,6 +416,18 @@ export const useGameStore = create<GameState>()(
         }
         set({ quests: get().quests.map(x => x.id === id ? { ...x, status: 'completed' } : x) });
         pushToast('Награда получена!', 'good');
+      },
+
+      unlockAchievement: (key) => {
+        const cur = get().achievements;
+        if (cur.find(a => a.key === key)) return; // уже разблокировано
+        set({
+          achievements: [
+            ...cur,
+            { id: rid('ach'), key, unlocked_at: new Date().toISOString() }
+          ]
+        });
+        pushToast(`Достижение: ${key}`, 'good');
       },
 
       // ============================================================

@@ -13,6 +13,7 @@ import Inventory from './pages/Inventory';
 import Shop from './pages/Shop';
 import Boss from './pages/Boss';
 import Settings from './pages/Settings';
+import Wardrobe from './pages/Wardrobe';
 import Layout from './components/Layout';
 import Toasts from './components/ui/Toasts';
 import LevelUpFlash from './components/ui/LevelUpFlash';
@@ -55,6 +56,7 @@ export default function App() {
           <Route path="inventory" element={<Inventory />} />
           <Route path="shop" element={<Shop />} />
           <Route path="boss" element={<Boss />} />
+          <Route path="wardrobe" element={<Wardrobe />} />
           <Route path="settings" element={<Settings />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

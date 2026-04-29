@@ -30,13 +30,20 @@ export function aggregateEffects(equipped: ItemEffects[]): ItemEffects {
     damage_mult: 1,
     extra_skips_per_week: 0,
     rare_drop_bonus: 0,
-    category_bonus: {}
+    category_bonus: {},
+    str: 0, int: 0, agi: 0, luc: 0, vit: 0, focus: 0
   };
   for (const e of equipped) {
     if (e.xp_mult)             out.xp_mult = (out.xp_mult ?? 1) * e.xp_mult;
     if (e.damage_mult)         out.damage_mult = (out.damage_mult ?? 1) * e.damage_mult;
     if (e.extra_skips_per_week)out.extra_skips_per_week = (out.extra_skips_per_week ?? 0) + e.extra_skips_per_week;
     if (e.rare_drop_bonus)     out.rare_drop_bonus = (out.rare_drop_bonus ?? 0) + e.rare_drop_bonus;
+    if (e.str) out.str = (out.str ?? 0) + e.str;
+    if (e.int) out.int = (out.int ?? 0) + e.int;
+    if (e.agi) out.agi = (out.agi ?? 0) + e.agi;
+    if (e.luc) out.luc = (out.luc ?? 0) + e.luc;
+    if (e.vit) out.vit = (out.vit ?? 0) + e.vit;
+    if (e.focus) out.focus = (out.focus ?? 0) + e.focus;
     if (e.category_bonus) {
       for (const [k, v] of Object.entries(e.category_bonus)) {
         out.category_bonus![k] = (out.category_bonus![k] ?? 1) * v;

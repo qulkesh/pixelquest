@@ -19,7 +19,16 @@ export const ru = {
     dashboard: 'Главная', habits: 'Привычки', todos: 'Задачи',
     quests: 'Квесты', achievements: 'Достижения',
     inventory: 'Инвентарь', shop: 'Магазин', boss: 'Босс недели',
+    wardrobe: 'Гардероб',
     settings: 'Настройки'
+  },
+  wardrobe: {
+    title: 'Гардероб',
+    skin: 'Кожа',
+    hairStyle: 'Причёска',
+    hairColor: 'Цвет волос',
+    eyes: 'Глаза',
+    outfit: 'Цвет одежды'
   },
   stats: {
     level: 'УРОВЕНЬ', xp: 'Опыт', hp: 'Здоровье',

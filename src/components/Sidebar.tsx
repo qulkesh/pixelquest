@@ -9,7 +9,8 @@ const items: { to: string; key: string; icon: string }[] = [
   { to: '/achievements', key: 'nav.achievements', icon: '★' },
   { to: '/inventory',    key: 'nav.inventory',    icon: '☷' },
   { to: '/shop',         key: 'nav.shop',         icon: '$' },
-  { to: '/boss',         key: 'nav.boss',         icon: '☠' }
+  { to: '/boss',         key: 'nav.boss',         icon: '☠' },
+  { to: '/wardrobe',     key: 'nav.wardrobe',     icon: '♛' }
 ];
 
 export default function Sidebar() {

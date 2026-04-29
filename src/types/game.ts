@@ -11,9 +11,11 @@ export type ItemSlot =
 export type Gender = 'male' | 'female' | 'other';
 
 export interface Appearance {
-  skin: 1 | 2 | 3 | 4;
-  hair: 1 | 2 | 3 | 4;
-  outfit: 1 | 2 | 3 | 4;
+  skin: number;        // 1..8 — оттенок кожи
+  hair: number;        // 1..8 — цвет волос
+  outfit: number;      // 1..8 — цвет одежды по умолчанию
+  hair_style?: number; // 1..6 — причёска (опц., default 1)
+  eyes?: number;       // 1..6 — цвет глаз (опц., default 1)
 }
 
 export interface Profile {
@@ -129,6 +131,12 @@ export interface ItemEffects {
   loot?: Rarity;
   duration_h?: number;
   focus?: number;
+  // ---- Combat / RPG stats (бонусы от экипировки) ----
+  str?: number;       // сила: +урон, бонус к спорту/работе
+  int?: number;       // интеллект: +xp от учёбы/чтения
+  agi?: number;       // ловкость: +шанс не получить штраф, +скип
+  luc?: number;       // удача: +шанс редкого дропа
+  vit?: number;       // живучесть: +HP_max
 }
 
 export interface InventoryRow {
