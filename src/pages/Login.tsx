@@ -27,7 +27,7 @@ export default function Login() {
       else await signUp(email, password, nickname || 'Hero');
       navigate(mode === 'up' ? '/onboarding' : '/');
     } catch (err: any) {
-      pushToast(err.message ?? 'Ошибка', 'bad');
+      pushToast({ text: err.message ?? 'Ошибка', tone: 'bad' });
     }
   }
 

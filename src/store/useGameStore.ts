@@ -452,7 +452,7 @@ function applyXpGold(xpDelta: number, goldDelta: number) {
     xp -= xpForLevel(level);
     level += 1;
     hp_max += 5;
-    useUiStore.getState().pushToast(`LVL UP! ${level}`, 'good');
+    useUiStore.getState().pushToast({ text: `LVL UP! ${level}`, tone: 'good' });
     useUiStore.getState().flashLevelUp();
     // give a chest
     const chestKey = level % 5 === 0 ? 'i-chest_rare' : 'i-chest_common';
@@ -477,7 +477,7 @@ function applyDamage(amount: number) {
   if (hp === 0) {
     rest_until = new Date(Date.now() + 60 * 60 * 1000).toISOString();
     hp = Math.floor(p.hp_max / 4); // герой просыпается с 25% HP, пока остальное восстанавливается
-    useUiStore.getState().pushToast('Герой ушёл на отдых на 1 час', 'info');
+    useUiStore.getState().pushToast({ text: 'Герой ушёл на отдых на 1 час', tone: 'info' });
   }
   useGameStore.setState({ profile: { ...p, hp, rest_until } });
 }
@@ -501,7 +501,7 @@ function bumpStreak(streak: Streak, dateKey: string): Streak {
     const map: Record<number, string> = { 3: 'i-chest_common', 7: 'i-chest_rare', 14: 'i-chest_epic', 30: 'i-sword_dragon' };
     const itemId = map[next];
     addToInventory(itemId);
-    useUiStore.getState().pushToast(`Streak ${next}: получен предмет!`, 'good');
+    useUiStore.getState().pushToast({ text: `Streak ${next}: получен предмет!`, tone: 'good' });
   }
   return out;
 }
@@ -527,7 +527,7 @@ function tryDrop(eff: ItemEffects) {
   const drop = candidates[Math.floor(Math.random() * candidates.length)];
   addToInventory(drop.id);
   const lang = useUiStore.getState().lang;
-  useUiStore.getState().pushToast(`Дроп: ${lang === 'ru' ? drop.name_ru : drop.name_en}`, 'good');
+  useUiStore.getState().pushToast({ text: `Дроп: ${lang === 'ru' ? drop.name_ru : drop.name_en}`, tone: 'good' });
 }
 
 function addToInventory(itemId: string) {
@@ -568,7 +568,7 @@ function rarityWeight(have: string, target: string): number {
 }
 
 function onBossDefeated() {
-  useUiStore.getState().pushToast('Босс повержен! 🎉', 'good');
+  useUiStore.getState().pushToast({ text: 'Босс повержен! 🎉', tone: 'good' });
   // big reward: chest + gold
   addToInventory('i-chest_epic');
   applyXpGold(300, 200);
